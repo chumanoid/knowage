@@ -10,4 +10,5 @@
 	<ResourceLink global="host_url" name="host_url" type="java.lang.String"/>
 	<ResourceLink global="service_url" name="service_url" type="java.lang.String"/>   
 	<ResourceLink name="hmacKey" global="hmacKey" type="java.lang.String"/>
+	<ResourceLink global="jdbc/reports" name="jdbc/reports" type="javax.sql.DataSource"/>
 </Context>
