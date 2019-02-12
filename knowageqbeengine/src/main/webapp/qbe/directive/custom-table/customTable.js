@@ -217,23 +217,35 @@ function qbeCustomTable($scope, $rootScope, $mdDialog, sbiModule_translate, sbiM
 		var config = {
 				attachTo:  angular.element(document.body),
 				templateUrl: sbiModule_config.contextName +'/qbe/templates/datasetPreviewDialogTemplate.html',
-				position: $mdPanel.newPanelPosition().absolute().center(),
+				position: $mdPanel.newPanelPosition().absolute().center().top("50%"),
 				fullscreen :false,
 				controller: function($scope,mdPanelRef,sbiModule_translate){
 					$scope.model ={ "completeresult": completeResult, "completeResultsColumns": completeResultsColumns, "previewModel": previewModel, "totalNumberOfItems": totalNumberOfItems, "mdPanelRef":mdPanelRef};
+					$scope.first = true;
 					$scope.changeDatasetPage=function(itemsPerPage,currentPageNumber){
-						$rootScope.$broadcast('start',{"itemsPerPage":itemsPerPage, "currentPageNumber":currentPageNumber});
+						if($scope.first){
+							$scope.first = false
+						}else{
+							$rootScope.$broadcast('start',{"itemsPerPage":itemsPerPage, "currentPageNumber":currentPageNumber});
+						}
+
 					}
 					$scope.closePanel = function () {
+						angular.copy(null,$scope.changeDatasetPage)
 						mdPanelRef.close();
 						mdPanelRef.destroy();
 					}
+
+					$scope.$on("$destroy",function(){
+						mdPanelRef.close();
+						mdPanelRef.destroy();
+						})
 					$scope.translate = sbiModule_translate;
 				},
 				locals: {completeresult: completeResult, completeResultsColumns: completeResultsColumns, previewModel: previewModel, totalNumberOfItems: totalNumberOfItems},
 				hasBackdrop: true,
-				clickOutsideToClose: true,
-				escapeToClose: true,
+				clickOutsideToClose: false,
+				escapeToClose: false,
 				focusOnOpen: true,
 				preserveScope: true,
 		};
